@@ -1,0 +1,48 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: f2b_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: f2b_db
+      POSTGRES_USER: f2b_user
+      POSTGRES_PASSWORD: f2b_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U f2b_user -d f2b_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: f2b_backend
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgresql+asyncpg://f2b_user:f2b_password@postgres:5432/f2b_db
+      FRONTEND_URL: http://localhost:5173
+      JWT_SECRET: your-super-secret-key-change-in-production
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: f2b_frontend
+    restart: unless-stopped
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:
