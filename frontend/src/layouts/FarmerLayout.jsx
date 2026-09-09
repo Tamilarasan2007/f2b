@@ -2,7 +2,7 @@ import { Outlet, NavLink } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useLanguage } from '../context/LanguageContext';
 import RoleSwitcherBar from '../components/RoleSwitcherBar';
-import { Home, Plus, Truck, Wallet, LogOut, TrendingUp, MessageSquare, Gavel, BookOpen } from 'lucide-react';
+import { Home, Plus, Truck, Wallet, LogOut, TrendingUp, MessageSquare, BookOpen } from 'lucide-react';
 
 export default function FarmerLayout() {
   const { user, logout } = useAuth();
@@ -74,10 +74,6 @@ export default function FarmerLayout() {
           <NavLink to="/farmer/negotiations" style={({ isActive }) => navStyle(isActive)}>
             <MessageSquare size={20} />
             <span>F2C {lang === 'ta' ? 'பேரம்' : lang === 'hi' ? 'मोलभाव' : 'Bargain'}</span>
-          </NavLink>
-          <NavLink to="/farmer/bidding" style={({ isActive }) => navStyle(isActive)}>
-            <Gavel size={20} />
-            <span>F2D {lang === 'ta' ? 'ஏலம் 🏆' : lang === 'hi' ? 'नीलामी 🏆' : 'Auction 🏆'}</span>
           </NavLink>
           <NavLink to="/farmer/manual" style={({ isActive }) => navStyle(isActive)}>
             <BookOpen size={20} />

@@ -1,5 +1,5 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { AuthProvider, useAuth } from './context/AuthContext';
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { AuthProvider, useAuth, ROLE_ROUTES } from './context/AuthContext';
 import { LanguageProvider } from './context/LanguageContext';
 
 // Layouts
@@ -18,7 +18,6 @@ import AddCrop from './pages/farmer/AddCrop';
 import FarmerPickups from './pages/farmer/FarmerPickups';
 import DemandForecast from './pages/farmer/DemandForecast';
 import FarmerNegotiations from './pages/farmer/FarmerNegotiations';
-import FarmerDealerBidding from './pages/farmer/FarmerDealerBidding';
 import UserManual from './pages/farmer/UserManual';
 import DriverDashboard from './pages/driver/DriverDashboard';
 import DriverRoute from './pages/driver/DriverRoute';
@@ -40,17 +39,18 @@ import AdminRoutes from './pages/admin/AdminRoutes';
 
 import './index.css';
 
-import React, { useEffect } from 'react';
-
 function ProtectedRoute({ children, allowedRoles }) {
-  const { user, loginAsRole } = useAuth();
+  const { user } = useAuth();
+  const location = useLocation();
 
-  useEffect(() => {
-    if (!user || (allowedRoles && !allowedRoles.includes(user?.role))) {
-      const targetRole = (allowedRoles && allowedRoles[0]) || 'FARMER';
-      loginAsRole(targetRole);
-    }
-  }, [user, allowedRoles, loginAsRole]);
+  if (!user) {
+    return <Navigate to="/login" state={{ from: location }} replace />;
+  }
+
+  if (allowedRoles && !allowedRoles.includes(user.role)) {
+    const userHome = ROLE_ROUTES[user.role] || '/login';
+    return <Navigate to={userHome} replace />;
+  }
 
   return children;
 }
@@ -70,7 +70,6 @@ function AppRoutes() {
         <Route path="pickups" element={<FarmerPickups />} />
         <Route path="forecast" element={<DemandForecast />} />
         <Route path="negotiations" element={<FarmerNegotiations />} />
-        <Route path="bidding" element={<FarmerDealerBidding />} />
         <Route path="manual" element={<UserManual />} />
       </Route>
       <Route path="/manual" element={<UserManual />} />

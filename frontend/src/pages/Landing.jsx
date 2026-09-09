@@ -6,7 +6,7 @@ import { useAuth, ROLE_ROUTES } from '../context/AuthContext';
 
 export default function Landing() {
   const { lang, setLang, languageNames, t } = useLanguage();
-  const { loginAsRole } = useAuth();
+  const { user, loginAsRole, logout } = useAuth();
   const navigate = useNavigate();
 
   const handleQuickEnter = (role) => {
@@ -63,30 +63,67 @@ export default function Landing() {
             </select>
           </div>
 
-          <Link to="/login" style={{
-            padding: '8px 16px',
-            borderRadius: '8px',
-            border: '1px solid #16a34a',
-            color: '#16a34a',
-            textDecoration: 'none',
-            fontSize: '14px',
-            fontWeight: '600'
-          }}>
-            {t('login')}
-          </Link>
+          {user ? (
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <Link to={ROLE_ROUTES[user.role] || '/login'} style={{
+                padding: '8px 16px',
+                borderRadius: '8px',
+                background: '#16a34a',
+                color: 'white',
+                textDecoration: 'none',
+                fontSize: '13px',
+                fontWeight: '700',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px'
+              }}>
+                <span>{t('go_to_dashboard') || 'My Portal'}</span>
+                <ArrowRight size={14} />
+              </Link>
+              <button
+                onClick={() => logout()}
+                style={{
+                  padding: '8px 12px',
+                  borderRadius: '8px',
+                  border: '1px solid #e7e5e4',
+                  background: 'white',
+                  color: '#dc2626',
+                  fontSize: '13px',
+                  fontWeight: '600',
+                  cursor: 'pointer'
+                }}
+              >
+                {t('logout') || 'Logout'}
+              </button>
+            </div>
+          ) : (
+            <>
+              <Link to="/login" style={{
+                padding: '8px 16px',
+                borderRadius: '8px',
+                border: '1px solid #16a34a',
+                color: '#16a34a',
+                textDecoration: 'none',
+                fontSize: '14px',
+                fontWeight: '600'
+              }}>
+                {t('login')}
+              </Link>
 
-          <Link to="/register" style={{
-            padding: '8px 16px',
-            borderRadius: '8px',
-            background: '#16a34a',
-            color: 'white',
-            textDecoration: 'none',
-            fontSize: '14px',
-            fontWeight: '600',
-            boxShadow: '0 2px 6px rgba(22, 163, 74, 0.3)'
-          }}>
-            {t('register')}
-          </Link>
+              <Link to="/register" style={{
+                padding: '8px 16px',
+                borderRadius: '8px',
+                background: '#16a34a',
+                color: 'white',
+                textDecoration: 'none',
+                fontSize: '14px',
+                fontWeight: '600',
+                boxShadow: '0 2px 6px rgba(22, 163, 74, 0.3)'
+              }}>
+                {t('register')}
+              </Link>
+            </>
+          )}
         </div>
       </header>
 
@@ -145,49 +182,96 @@ export default function Landing() {
         {/* Quick Role Navigation Bar */}
         <div style={{
           background: 'white',
-          padding: '16px',
+          padding: '16px 20px',
           borderRadius: '16px',
           border: '1px solid #e7e5e4',
           boxShadow: '0 4px 16px rgba(0,0,0,0.05)',
           display: 'flex',
           justifyContent: 'center',
-          gap: '10px',
+          alignItems: 'center',
+          gap: '12px',
           flexWrap: 'wrap',
           marginBottom: '48px'
         }}>
-          <span style={{ fontSize: '13px', fontWeight: '700', color: '#78716c', alignSelf: 'center', marginRight: '6px' }}>
-            ⚡ {t('direct_portal_access')}:
-          </span>
-          <button
-            onClick={() => handleQuickEnter('FARMER')}
-            style={{ padding: '8px 14px', borderRadius: '10px', background: '#f0fdf4', border: '1px solid #bbf7d0', color: '#15803d', fontWeight: '700', fontSize: '13px', cursor: 'pointer' }}
-          >
-            🌾 {t('open_farmer_portal')}
-          </button>
-          <button
-            onClick={() => handleQuickEnter('COLLECTION_POINT_OPERATOR')}
-            style={{ padding: '8px 14px', borderRadius: '10px', background: '#eef2ff', border: '1px solid #c7d2fe', color: '#4338ca', fontWeight: '700', fontSize: '13px', cursor: 'pointer' }}
-          >
-            📦 {t('open_operator_portal')}
-          </button>
-          <button
-            onClick={() => handleQuickEnter('DRIVER')}
-            style={{ padding: '8px 14px', borderRadius: '10px', background: '#fff7ed', border: '1px solid #fed7aa', color: '#c2410c', fontWeight: '700', fontSize: '13px', cursor: 'pointer' }}
-          >
-            🚛 {t('open_driver_portal')}
-          </button>
-          <button
-            onClick={() => handleQuickEnter('BUYER')}
-            style={{ padding: '8px 14px', borderRadius: '10px', background: '#fdf2f8', border: '1px solid #fbcfe8', color: '#be185d', fontWeight: '700', fontSize: '13px', cursor: 'pointer' }}
-          >
-            🏬 {t('open_buyer_portal')}
-          </button>
-          <button
-            onClick={() => handleQuickEnter('ADMIN')}
-            style={{ padding: '8px 14px', borderRadius: '10px', background: '#fef2f2', border: '1px solid #fecaca', color: '#b91c1c', fontWeight: '700', fontSize: '13px', cursor: 'pointer' }}
-          >
-            👑 {t('open_admin_portal')}
-          </button>
+          {user ? (
+            <>
+              <span style={{ fontSize: '13.5px', fontWeight: '700', color: '#292524' }}>
+                👋 {lang === 'ta' ? 'வணக்கம்' : lang === 'hi' ? 'नमस्ते' : 'Welcome back'}, <strong>{user.full_name || user.name || user.email}</strong>!
+                <span style={{ marginLeft: '6px', color: '#16a34a', fontWeight: '800' }}>({user.role})</span>
+              </span>
+              <button
+                onClick={() => navigate(ROLE_ROUTES[user.role] || '/login')}
+                style={{
+                  padding: '9px 18px',
+                  borderRadius: '10px',
+                  background: '#16a34a',
+                  border: 'none',
+                  color: 'white',
+                  fontWeight: '700',
+                  fontSize: '13px',
+                  cursor: 'pointer',
+                  boxShadow: '0 2px 8px rgba(22, 163, 74, 0.25)',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '6px'
+                }}
+              >
+                <span>{t('go_to_dashboard') || 'Go to My Portal'}</span>
+                <ArrowRight size={15} />
+              </button>
+              <button
+                onClick={() => logout()}
+                style={{
+                  padding: '8px 14px',
+                  borderRadius: '10px',
+                  background: '#fef2f2',
+                  border: '1px solid #fecaca',
+                  color: '#dc2626',
+                  fontWeight: '700',
+                  fontSize: '13px',
+                  cursor: 'pointer'
+                }}
+              >
+                {t('logout') || 'Log Out'}
+              </button>
+            </>
+          ) : (
+            <>
+              <span style={{ fontSize: '13px', fontWeight: '700', color: '#78716c', alignSelf: 'center', marginRight: '6px' }}>
+                ⚡ {t('direct_portal_access')}:
+              </span>
+              <button
+                onClick={() => handleQuickEnter('FARMER')}
+                style={{ padding: '8px 14px', borderRadius: '10px', background: '#f0fdf4', border: '1px solid #bbf7d0', color: '#15803d', fontWeight: '700', fontSize: '13px', cursor: 'pointer' }}
+              >
+                🌾 {t('open_farmer_portal')}
+              </button>
+              <button
+                onClick={() => handleQuickEnter('COLLECTION_POINT_OPERATOR')}
+                style={{ padding: '8px 14px', borderRadius: '10px', background: '#eef2ff', border: '1px solid #c7d2fe', color: '#4338ca', fontWeight: '700', fontSize: '13px', cursor: 'pointer' }}
+              >
+                📦 {t('open_operator_portal')}
+              </button>
+              <button
+                onClick={() => handleQuickEnter('DRIVER')}
+                style={{ padding: '8px 14px', borderRadius: '10px', background: '#fff7ed', border: '1px solid #fed7aa', color: '#c2410c', fontWeight: '700', fontSize: '13px', cursor: 'pointer' }}
+              >
+                🚛 {t('open_driver_portal')}
+              </button>
+              <button
+                onClick={() => handleQuickEnter('BUYER')}
+                style={{ padding: '8px 14px', borderRadius: '10px', background: '#fdf2f8', border: '1px solid #fbcfe8', color: '#be185d', fontWeight: '700', fontSize: '13px', cursor: 'pointer' }}
+              >
+                🏬 {t('open_buyer_portal')}
+              </button>
+              <button
+                onClick={() => handleQuickEnter('ADMIN')}
+                style={{ padding: '8px 14px', borderRadius: '10px', background: '#fef2f2', border: '1px solid #fecaca', color: '#b91c1c', fontWeight: '700', fontSize: '13px', cursor: 'pointer' }}
+              >
+                👑 {t('open_admin_portal')}
+              </button>
+            </>
+          )}
         </div>
 
         {/* Feature Cards Grid */}

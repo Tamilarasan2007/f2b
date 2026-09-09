@@ -65,7 +65,7 @@ export function AuthProvider({ children }) {
       const saved = localStorage.getItem('f2b_user');
       if (saved) return JSON.parse(saved);
     } catch (e) {}
-    return DEMO_USERS.FARMER;
+    return null;
   });
   const [loading, setLoading] = useState(false);
 
@@ -135,15 +135,14 @@ export function AuthProvider({ children }) {
   };
 
   const logout = () => {
-    const defaultUser = DEMO_USERS.FARMER;
-    localStorage.setItem('f2b_user', JSON.stringify(defaultUser));
-    localStorage.setItem('f2b_token', 'demo-mock-jwt-token');
-    setUser(defaultUser);
+    localStorage.removeItem('f2b_user');
+    localStorage.removeItem('f2b_token');
+    setUser(null);
   };
 
   const getDashboardRoute = () => {
-    if (!user) return '/farmer/dashboard';
-    return ROLE_ROUTES[user.role] || '/farmer/dashboard';
+    if (!user) return '/login';
+    return ROLE_ROUTES[user.role] || '/login';
   };
 
   return (

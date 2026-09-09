@@ -4,7 +4,7 @@ import { useAuth } from '../../context/AuthContext';
 import { useLanguage } from '../../context/LanguageContext';
 import api from '../../services/api';
 import StatusBadge from '../../components/StatusBadge';
-import { Sprout, PlusCircle, Truck, TrendingUp, SunMedium, ArrowRight, Sparkles, MessageSquare, Gavel, Trophy, BookOpen } from 'lucide-react';
+import { Sprout, PlusCircle, Truck, TrendingUp, SunMedium, ArrowRight, Sparkles, MessageSquare, Trophy, BookOpen } from 'lucide-react';
 
 export default function FarmerDashboard() {
   const { user } = useAuth();
@@ -202,38 +202,38 @@ export default function FarmerDashboard() {
           <ArrowRight size={16} color="#0284c7" />
         </Link>
 
-        {/* F2D Dealer Bidding Card */}
+        {/* Demand Forecast Card */}
         <Link
-          to="/farmer/bidding"
+          to="/farmer/forecast"
           style={{
-            background: 'linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%)',
-            border: '1.5px solid #d8b4fe',
+            background: 'linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%)',
+            border: '1.5px solid #86efac',
             borderRadius: '16px',
             padding: '16px',
             textDecoration: 'none',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            boxShadow: '0 2px 8px rgba(124, 58, 237, 0.08)'
+            boxShadow: '0 2px 8px rgba(22, 163, 74, 0.08)'
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <div style={{ background: '#7c3aed', color: 'white', padding: '10px', borderRadius: '12px' }}>
-              <Gavel size={20} />
+            <div style={{ background: '#16a34a', color: 'white', padding: '10px', borderRadius: '12px' }}>
+              <TrendingUp size={20} />
             </div>
             <div>
-              <div style={{ fontSize: '11px', fontWeight: '800', color: '#7c3aed' }}>
-                {t('wholesale_quantity_badge')}
+              <div style={{ fontSize: '11px', fontWeight: '800', color: '#16a34a' }}>
+                {t('ai_forecast_badge') || 'AI Market Intelligence'}
               </div>
-              <div style={{ fontSize: '14px', fontWeight: '800', color: '#6d28d9', margin: '2px 0' }}>
-                🏆 {t('f2d_title')}
+              <div style={{ fontSize: '14px', fontWeight: '800', color: '#15803d', margin: '2px 0' }}>
+                📈 {t('demand_forecast')}
               </div>
-              <div style={{ fontSize: '11px', color: '#7c3aed', fontWeight: '600' }}>
-                {lang === 'ta' ? 'அதிகபட்ச ஏலம்: ₹33.50/கிலோ (வெற்றி 🏆)' : lang === 'hi' ? 'उच्चतम बोली: ₹33.50/किलो (जीत 🏆)' : 'Highest Bid: ₹33.50/kg (Wins 🏆)'}
+              <div style={{ fontSize: '11px', color: '#16a34a', fontWeight: '600' }}>
+                {lang === 'ta' ? 'அடுத்த 7 நாட்கள் தேவை கணிப்புகள்' : lang === 'hi' ? 'अगले 7 दिनों का मांग पूर्वानुमान' : 'Next 7-day crop demand predictions'}
               </div>
             </div>
           </div>
-          <ArrowRight size={16} color="#7c3aed" />
+          <ArrowRight size={16} color="#16a34a" />
         </Link>
       </div>
 

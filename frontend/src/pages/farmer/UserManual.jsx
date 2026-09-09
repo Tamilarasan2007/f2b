@@ -126,25 +126,19 @@ export default function UserManual() {
             <p style={{ fontSize: '13px', color: '#334155', margin: '0 0 12px 0', lineHeight: 1.5 }}>
               {t('manual_step_3_desc')}
             </p>
-            <button
-              type="button"
-              onClick={() => navigate('/farmer/bidding')}
-              style={{
-                background: '#7c3aed',
-                color: 'white',
-                border: 'none',
-                padding: '8px 14px',
-                borderRadius: '8px',
-                fontSize: '12px',
-                fontWeight: '700',
-                cursor: 'pointer',
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '6px'
-              }}
-            >
-              <Gavel size={14} /> {t('f2d_title')} <ArrowRight size={14} />
-            </button>
+            <div style={{
+              background: '#ede9fe',
+              color: '#5b21b6',
+              padding: '8px 12px',
+              borderRadius: '8px',
+              fontSize: '12px',
+              fontWeight: '700',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px'
+            }}>
+              <span>🔒 {lang === 'ta' ? 'வியாபாரி ஏலம் (விவசாயிகள் அணுகல் இல்லை)' : lang === 'hi' ? 'व्यापारी नीलामी (किसान पहुंच प्रतिबंधित)' : 'Dealer Auction (Buyer portal only)'}</span>
+            </div>
           </div>
         </div>
       </div>
@@ -311,25 +305,19 @@ export default function UserManual() {
             <p style={{ fontSize: '13.5px', color: '#475569', margin: '0 0 12px 0', lineHeight: 1.6 }}>
               {t('manual_step_3_desc')}
             </p>
-            <button
-              type="button"
-              onClick={() => navigate('/farmer/bidding')}
-              style={{
-                background: '#7c3aed',
-                color: 'white',
-                border: 'none',
-                padding: '8px 14px',
-                borderRadius: '8px',
-                fontSize: '12px',
-                fontWeight: '700',
-                cursor: 'pointer',
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '6px'
-              }}
-            >
-              {t('f2d_title')} <ArrowRight size={14} />
-            </button>
+            <div style={{
+              background: '#f3e8ff',
+              color: '#6d28d9',
+              padding: '8px 12px',
+              borderRadius: '8px',
+              fontSize: '12px',
+              fontWeight: '700',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px'
+            }}>
+              <span>🔒 {lang === 'ta' ? 'வியாபாரிகளுக்கான பிரத்யேக ஏலம் (விவசாயிகள் நேரடியாக பங்கேற்க முடியாது)' : lang === 'hi' ? 'व्यापारियों के लिए विशेष नीलामी (किसानों के लिए प्रतिबंधित)' : 'Exclusive to Mandi Buyers/Dealers (Restricted for Farmers)'}</span>
+            </div>
           </div>
         </div>
 
